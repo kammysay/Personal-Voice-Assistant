@@ -1,0 +1,14 @@
+{
+    "weather":
+    {
+        "location": "City,us",
+        "api_key": "API KEY HERE"
+    },
+
+    "spotify":
+    {
+        "client_id": "CLIENT ID",
+        "client_secret": "CLIENT SECRET",
+        "username": "USERNAME"
+    }
+}
