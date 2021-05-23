@@ -28,7 +28,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 client_id=client_id, client_secret=client_secret, scope=scope, username=username, redirect_uri=redirect_uri))
 
 # List available devices
-def listDevices():
+def list_devices():
     devs = sp.devices()
     pp.pprint(devs)
 
@@ -50,9 +50,10 @@ def queue_recommended(uri, limit):
 
 
 # Play a song on Spotify using Spotipy library
-def play_song(text):
+def play_song(voice, text):
     # Building the search term
     text = text.replace("play ", "") # Removing the voice activation keyword
+    text = text.replace("Play ", "") # Removing the voice activation keyword
     new_text = text.replace(" ", "+")
 
     # Search for song
@@ -66,17 +67,18 @@ def play_song(text):
         # Add similar songs to queue
         queue_recommended(uri, 20)
 
-        return ""
     except spotipy.exceptions.SpotifyException:
-        return "I could not find an active device."
+        voice.speak("I could not find an active device")
     except IndexError:
-        return "I was unable to find the song ", text
+        phrase = "I was unable to find the song " + text
+        voice.speak(phrase)
 
 
 # Play an album on Spotify
-def play_album(text):
+def play_album(voice, text):
     # Building the search term
     text = text.replace("play ", "")  # Removing the voice activation keyword
+    text = text.replace("Play ", "")  # Removing the voice activation keyword
     text = text.replace("album ", "") # Removing the album keyword
     new_text = text.replace(" ", "+")
 
@@ -86,20 +88,27 @@ def play_album(text):
     try:
         # Play requested album
         uri = albums['albums']['items'][0]['uri']
+
+        # Start album from beginning (not shuffled)
+        sp.shuffle(state=False)
         sp.start_playback(device_id=device_id, context_uri=uri)
         return ""
     except spotipy.exceptions.SpotifyException:
-        return "I could not find an active device."
+        voice.speak("I could not find an active device.")
     except:
-        return "I was unable to find the album ", text
+        phrase = "I was unable to find the album " + text
+        voice.speak(phrase)
 
 
 # Play from an artist on Spotify
-def play_artist(text):
+def play_artist(voice, text):
     # Building the search term
     text = text.replace("play ", "")  # Removing the voice activation keyword
+    text = text.replace("Play ", "")  # Removing the voice activation keyword
     text = text.replace("artist ", "") # Removing the artist keyword
     new_text = text.replace(" ", "+")
+
+    print(new_text)
 
     # Search for artist
     artists = sp.search(q=new_text, type='artist', limit=1)
@@ -107,16 +116,19 @@ def play_artist(text):
     try:
         # Play requested artist
         uri = artists['artists']['items'][0]['uri']
+
+        sp.shuffle(state=True)
         sp.start_playback(device_id=device_id, context_uri=uri)
         return ""
     except spotipy.exceptions.SpotifyException:
-        return "I could not find an active device."
+        voice.speak("I could not find an active device.")
     except:
-        return "I was unable to find the artist ", text
+        phrase = "I was unable to find the artist " + text
+        voice.speak(phrase)
 
 
 # Return the current song and artist
-def current_song():
+def current_song(voice):
     try:
         # Call spotify API and check what song user is currently playing
         current = sp.current_playback(market=None, additional_types=None)
@@ -127,9 +139,9 @@ def current_song():
 
         # Building phrase
         phrase = "The current song is " + song + ", by " + artist
-        return phrase
+        voice.speak(phrase)
     except:
-        return "You are not currently playing any music."
+        voice.speak("You are not currently playing any music.")
 
 
 # Pause the user's currently playing song

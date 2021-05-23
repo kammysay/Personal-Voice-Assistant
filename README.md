@@ -1,9 +1,9 @@
 # **Personal Voice Assistant**
 
-This is my remake of Amazon Alexa/Google Assistant. 
+This is Delta, my remake of Amazon Alexa/Google Assistant. 
 
 ## **List of Commands** (keyword for command in bold, any sentence with that word will work)
-1. "Hey, **Jack**" - wake the voice assistant, will accept other commands after this one.
+1. "Hey, **Delta**" - wake the voice assistant, will accept other commands after this one.
 
 2. "**Introduce** yourself" - summarizes available commands
 
@@ -13,15 +13,19 @@ This is my remake of Amazon Alexa/Google Assistant.
 
 5. "Tell me a **joke**" - Tells a joke using the [Official Joke API](https://github.com/15Dkatz/official_joke_api)
 
-6. "What is the **weather**?" - reports the weather in your location using OpenWeather 
+6. "**Kanye** quote" - Reads a quote from Kanye West using the [kanye.rest API](https://kanye.rest/)
 
-7. "**Play** (song)" - plays a song through Spotify
+7. "What is the **weather**?" - reports the current weather in your location using OpenWeather 
 
-8. "**Play artist** (artist name)" - plays music from a specific artist
+8. "What is the **weather today/tomorrow/(specific day)**?" - gives the forecast for the requested day
 
-9. "**Play album** (album name)" - plays music from an album
+9. "**Search** (topic)" - searches for a topic on Wikipedia and returns a brief summary
 
-10. "**Current/Skip/Previous** song" - I think you get it at this point
+10. "**Play** (song)" - plays a song through Spotify
+
+11. "**Play artist/album** (artist/album name)" - plays music from a specific artist or album
+
+12. "**Current/Skip/Previous** song" - I think you get it at this point
 
     
 
