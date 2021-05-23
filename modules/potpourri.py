@@ -42,8 +42,7 @@ def fetch_time(voice):
 # Fetch today's date
 def fetch_date(voice):
     date = datetime.date.today().strftime("%B, %d, %Y")
-    phrase = "Today is " + date
-    voice.speak(phrase)
+    voice.speak("Today is " + date)
 
 
 # Fetch a joke from Official Joke API
@@ -63,5 +62,37 @@ def fetch_yeezy(voice):
     url = "https://api.kanye.rest/"
     req = requests.get(url)
 
-    phrase = req.json()['quote'] + ".          Kanye West" # Empty string is for timing
-    voice.speak(phrase)
+    voice.speak(req.json()['quote'] + ".          Kanye West") # Empty string is for timing
+
+
+# Define a word using free dictionary api
+def define_word(voice, text):
+    # Building URL
+    text = text.replace("define ", "")
+    text = text.replace(" ", "")
+    url = "https://api.dictionaryapi.dev/api/v2/entries/en_US/" + text
+    req = requests.get(url)
+
+    # Determine if there multiple definitions
+    entries = req.json()[0]['meanings']
+    if len(entries) > 1:
+        voice.speak("Multiple definitions found.")
+
+    # For each part of report possible definitions
+    i = 0
+    for entry in entries:
+        part_of_speech = req.json()[0]['meanings'][i]['partOfSpeech']
+        phrase = "As a " + part_of_speech + ", " + text + " can mean "
+
+        # Report each definition
+        definitions = req.json()[0]['meanings'][i]['definitions']
+        definition_count = len(definitions)
+        j = 0
+        for definition in definitions:
+            phrase = phrase + req.json()[0]['meanings'][i]['definitions'][j]['definition']
+            if j < definition_count - 1:
+                phrase = phrase + " or "
+            j = j + 1
+        i = i + 1
+        
+        voice.speak(phrase)

@@ -46,14 +46,13 @@ def queue_recommended(uri, limit):
             sp.add_to_queue(track_uri, device_id=device_id)
             i = i + 1
         except:
-            pass
+            break
 
 
 # Play a song on Spotify using Spotipy library
 def play_song(voice, text):
     # Building the search term
     text = text.replace("play ", "") # Removing the voice activation keyword
-    text = text.replace("Play ", "") # Removing the voice activation keyword
     new_text = text.replace(" ", "+")
 
     # Search for song
@@ -78,7 +77,6 @@ def play_song(voice, text):
 def play_album(voice, text):
     # Building the search term
     text = text.replace("play ", "")  # Removing the voice activation keyword
-    text = text.replace("Play ", "")  # Removing the voice activation keyword
     text = text.replace("album ", "") # Removing the album keyword
     new_text = text.replace(" ", "+")
 
@@ -104,11 +102,8 @@ def play_album(voice, text):
 def play_artist(voice, text):
     # Building the search term
     text = text.replace("play ", "")  # Removing the voice activation keyword
-    text = text.replace("Play ", "")  # Removing the voice activation keyword
     text = text.replace("artist ", "") # Removing the artist keyword
     new_text = text.replace(" ", "+")
-
-    print(new_text)
 
     # Search for artist
     artists = sp.search(q=new_text, type='artist', limit=1)

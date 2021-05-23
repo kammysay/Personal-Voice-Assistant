@@ -6,7 +6,6 @@ from modules import spotify as sp # play music through spotify (local import)
 from modules import weather as w  # weather updates (local import)
 from modules import wiki # search wikipedia (local import)
 
-
 # Recognizer and Microphone
 r = sr.Recognizer()
 mic = sr.Microphone()
@@ -16,6 +15,24 @@ v = voice.Voice()
 
 # Constants
 WAKE_NAME = "delta"
+
+# Play music on Spotify using Spotipy library
+def playMusic(text):
+    # Chose action based on keyword
+    if "artist" in text: # Play from an artist
+        sp.play_artist(v, text)
+    elif "album" in text: # Play from an album
+        sp.play_album(v, text)
+    elif "pause" in text or "stop" in text: # Pause the current track
+        sp.pause()
+    elif "skip" in text: # Skip the current track
+        sp.skip_song()
+    elif "previous" in text: # Play the previous track
+        sp.prev_song()
+    elif "current" in text: # Say the current track
+        sp.current_song(v)
+    else: # Play song
+        sp.play_song(v, text)
 
 # Get the weather report
 def fetchWeather(text):
@@ -39,23 +56,12 @@ def fetchWeather(text):
     w.current_weather(v)
 
 
-# Play music on Spotify using Spotipy library
-def playMusic(text):
-    # Chose action based on keyword
-    if "artist" in text: # Play from an artist
-        sp.play_artist(v, text)
-    elif "album" in text: # Play from an album
-        sp.play_album(v, text)
-    elif "pause" in text or "stop" in text: # Pause the current track
-        sp.pause()
-    elif "skip" in text: # Skip the current track
-        sp.skip_song()
-    elif "previous" in text: # Play the previous track
-        sp.prev_song()
-    elif "current" in text: # Say the current track
-        sp.current_song(v)
-    else: # Play song
-        sp.play_song(v, text)
+# Search wikipedia
+def search_wiki(text):
+    if "random" in text:
+        wiki.random_article(v)
+    else:
+        wiki.search(v, text)
         
 
 # Execute functions based on voice input
@@ -67,16 +73,17 @@ def inputCommand():
         try:
             # text = r.recognize_sphinx(audio)
             text = r.recognize_google(audio)
+            text = text.lower()
 
             print(text)
             # Function calls based on keywords
             # Online functions
             if "weather" in text:
                 fetchWeather(text)
-            elif "play" in text or "Play" in text or "song" in text or "music" in text or "artist" in text or "album" in text:
+            elif "play" in text or "song" in text or "music" in text or "artist" in text or "album" in text:
                 playMusic(text)
             elif "search" in text:
-                wiki.search(v, text)
+                search_wiki(text)
             elif "joke" in text:
                 p.fetch_joke(v)
             elif "Kanye" in text:

@@ -70,7 +70,6 @@ def todays_weather(voice):
 # Report tomorrow's weather forecast
 def tomorrows_weather(voice):
     extract_weather(voice, 1, "Tomorrow")
-    weather = fetch_weather()
 
 
 # Report the weather on a specific day

@@ -15,17 +15,21 @@ This is Delta, my remake of Amazon Alexa/Google Assistant.
 
 6. "**Kanye** quote" - Reads a quote from Kanye West using the [kanye.rest API](https://kanye.rest/)
 
-7. "What is the **weather**?" - reports the current weather in your location using OpenWeather 
+7. "**Define** (word)" - defines a word using [Free Dictionary API](https://dictionaryapi.dev/)
 
-8. "What is the **weather today/tomorrow/(specific day)**?" - gives the forecast for the requested day
+8. "What is the **weather**?" - reports the current weather in your location using OpenWeather 
 
-9. "**Search** (topic)" - searches for a topic on Wikipedia and returns a brief summary
+9. "What is the **weather today/tomorrow/(specific day)**?" - gives the forecast for the requested day
 
-10. "**Play** (song)" - plays a song through Spotify
+10. "**Search** (topic)" - searches for a topic on Wikipedia and returns a brief summary
 
-11. "**Play artist/album** (artist/album name)" - plays music from a specific artist or album
+11. "**Search random**" - searches a random topic on Wikipedia and returns a brief summary
 
-12. "**Current/Skip/Previous** song" - I think you get it at this point
+12. "**Play** (song)" - plays a song through Spotify
+
+13. "**Play artist/album** (artist/album name)" - plays music from a specific artist or album
+
+14. "**Current/Skip/Previous** song" - I think you get it at this point
 
     
 
