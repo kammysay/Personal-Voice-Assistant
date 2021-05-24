@@ -33,38 +33,34 @@ def list_devices():
     pp.pprint(devs)
 
 
-# Add recommended songs to queue based on URI
-def queue_recommended(uri, limit):
-    # Find recommended songs
-    queue = sp.recommendations(seed_tracks=[uri], limit=limit)
-
-    # Add recommended songs to queue (can only add one at a time)
-    i = 0
-    while i < limit:
-        try:
-            track_uri = queue['tracks'][i]['uri']
-            sp.add_to_queue(track_uri, device_id=device_id)
-            i = i + 1
-        except:
-            break
-
-
-# Play a song on Spotify using Spotipy library
+# Play a song on Spotify, play similar songs afterwards
 def play_song(voice, text):
     # Building the search term
     text = text.replace("play ", "") # Removing the voice activation keyword
     new_text = text.replace(" ", "+")
 
     # Search for song
-    songs = sp.search(q=new_text, type='track', limit=1)
+    song = sp.search(q=new_text, type='track', limit=1)
 
     try:
-        # Play requested song
-        uri = songs['tracks']['items'][0]['uri']
-        sp.start_playback(device_id=device_id, uris=[uri])
+        # Get song uri song
+        song_uri = song['tracks']['items'][0]['uri']
+        # Get artist uri for recommendations()
+        artist_uri = song['tracks']['items'][0]['artists'][0]['uri']
+        # Find similar songs to play afterwards
+        queue = sp.recommendations(seed_artists=[artist_uri],seed_tracks=[song_uri], limit=20)
 
-        # Add similar songs to queue
-        queue_recommended(uri, 20)
+        # Add recommended songs to queue (can only add one at a time)
+        uris = [song_uri]
+        i = 0
+        while i < 20:
+            try:# Add recommened song to queue
+                uris.append(queue['tracks'][i]['uri'])
+                i = i + 1
+            except:
+                break
+        
+        sp.start_playback(device_id=device_id, uris=uris, offset={"uri": song_uri})
 
     except spotipy.exceptions.SpotifyException:
         voice.speak("I could not find an active device")
@@ -90,7 +86,7 @@ def play_album(voice, text):
         # Start album from beginning (not shuffled)
         sp.shuffle(state=False)
         sp.start_playback(device_id=device_id, context_uri=uri)
-        return ""
+
     except spotipy.exceptions.SpotifyException:
         voice.speak("I could not find an active device.")
     except:
@@ -114,11 +110,34 @@ def play_artist(voice, text):
 
         sp.shuffle(state=True)
         sp.start_playback(device_id=device_id, context_uri=uri)
-        return ""
+
     except spotipy.exceptions.SpotifyException:
         voice.speak("I could not find an active device.")
     except:
         phrase = "I was unable to find the artist " + text
+        voice.speak(phrase)
+
+
+# Play a playlist on spotify
+def play_playlist(voice, text):
+    # Building search term
+    text = text.replace("play ", "") # Removing voice activation keyword
+    text = text.replace("playlist ", "") # Removing playlist keyword
+    new_text = text.replace(" ", "+")
+
+    playlists = sp.search(q=new_text, type='playlist', limit=1)
+
+    try:
+        # Play requested artist
+        uri = playlists['playlists']['items'][0]['uri']
+
+        sp.shuffle(state=True)
+        sp.start_playback(device_id=device_id, context_uri=uri)
+
+    except spotipy.exceptions.SpotifyException:
+        voice.speak("I could not find an active device.")
+    except:
+        phrase = "I was unable to find the playlist " + text
         voice.speak(phrase)
 
 

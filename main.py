@@ -23,6 +23,8 @@ def playMusic(text):
         sp.play_artist(v, text)
     elif "album" in text: # Play from an album
         sp.play_album(v, text)
+    elif "playlist" in text:
+        sp.play_playlist(v, text)
     elif "pause" in text or "stop" in text: # Pause the current track
         sp.pause()
     elif "skip" in text: # Skip the current track
@@ -104,6 +106,7 @@ def inputCommand():
 
         except sr.UnknownValueError:
             v.speak("Nevermind then.")
+
 
 # Main program loop, waiting for activation here
 while True:

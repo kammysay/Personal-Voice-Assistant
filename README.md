@@ -27,7 +27,7 @@ This is Delta, my remake of Amazon Alexa/Google Assistant.
 
 12. "**Play** (song)" - plays a song through Spotify
 
-13. "**Play artist/album** (artist/album name)" - plays music from a specific artist or album
+13. "**Play artist/album/playlist** (artist/album/playlist name)" - plays music from a specific artist or album
 
 14. "**Current/Skip/Previous** song" - I think you get it at this point
 
