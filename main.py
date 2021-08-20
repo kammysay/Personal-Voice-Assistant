@@ -67,13 +67,15 @@ def search_wiki(text):
         
 
 # Execute functions based on voice input
+# Uses Google's voice recognition here instead of Mozilla's Deepspeech, as it take in longer
+# sentences and is more accurate than Deepspeech
 def inputCommand():
     v.speak("What do you need?")
     with sr.Microphone() as source:
         # audio = r.listen(source, 10, 5)
         audio = r.listen(source, phrase_time_limit=5)
         try:
-            # text = r.recognize_sphinx(audio)
+            d
             text = r.recognize_google(audio)
             text = text.lower()
 
@@ -106,20 +108,3 @@ def inputCommand():
 
         except sr.UnknownValueError:
             v.speak("Nevermind then.")
-
-
-# Main program loop, waiting for activation here
-while True:
-    with sr.Microphone() as source:
-        print("Say: Hey, Delta.")
-
-        # Listen to microphone
-        audio = r.listen(source, phrase_time_limit=3) # Setting phrase time limit to a short interval since it only listens for one keyword
-        try:
-            # Using the sphinx engine here because it doesn't need an internet connection
-            text = r.recognize_sphinx(audio)
-            if WAKE_NAME in text:
-                inputCommand()
-
-        except sr.UnknownValueError: # If the API couldn't decipher anything being said/if nothing is said
-            pass
